@@ -14,6 +14,13 @@ class App extends React.Component {
 
   componentDidMount() {
     const { params } = this.props.match;
+    // 1. first reinstate local storage
+    const localStorageRef = localStorage.getItem(params.storeId);
+    if (localStorageRef) {
+      this.setState({
+        order: JSON.parse(localStorageRef)
+      });
+    }
     this.ref = base.syncState(`${params.storeId}/fishes`, {
       context: this,
       state: "fishes"
@@ -77,6 +84,7 @@ class App extends React.Component {
         </div>
         <Order fishes={this.state.fishes} order={this.state.order} />
         <Inventory
+          fishes={this.state.fishes}
           addFish={this.addFish}
           loadSampleFishes={this.loadSampleFishes}
         />
